@@ -32,7 +32,7 @@ Java 17 · REST Assured 5 · TestNG 7 · Jackson · Allure · Maven · dotenv-ja
 | TC25 | E2E | Login → add product → order → verify → clean up | E2E | 🔜 |
 | TC26–TC27 | Contract | JSON schema and header checks | Contract | 🔜 |
 
-The full test plan, with expected results and priorities, is in [`docs/`](docs/).
+   The full test plan, with expected results and priorities, is in [docs/test-plan.md](docs/test-plan.md).
 
 ## Project structure
 
