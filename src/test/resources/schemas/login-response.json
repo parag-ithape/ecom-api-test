@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Login response",
+  "type": "object",
+  "required": ["token", "userId", "message"],
+  "properties": {
+    "token": { "type": "string", "minLength": 1 },
+    "userId": { "type": "string", "pattern": "^[0-9a-f]{24}$" },
+    "message": { "type": "string" }
+  }
+}

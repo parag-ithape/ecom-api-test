@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Order details response",
+  "type": "object",
+  "required": ["data", "message"],
+  "properties": {
+    "data": {
+      "type": "object",
+      "required": ["_id", "orderById", "orderBy", "productOrderedId", "productName", "country", "orderPrice"],
+      "properties": {
+        "_id": { "type": "string", "pattern": "^[0-9a-f]{24}$" },
+        "orderById": { "type": "string", "pattern": "^[0-9a-f]{24}$" },
+        "orderBy": { "type": "string" },
+        "productOrderedId": { "type": "string", "pattern": "^[0-9a-f]{24}$" },
+        "productName": { "type": "string" },
+        "country": { "type": "string" },
+        "productDescription": { "type": "string" },
+        "productImage": { "type": "string" },
+        "orderPrice": { "type": "string" }
+      }
+    },
+    "message": { "type": "string" }
+  }
+}

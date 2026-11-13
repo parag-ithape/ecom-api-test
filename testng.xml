@@ -14,4 +14,22 @@
         </classes>
     </test>
 
+    <test name="Order Tests">
+        <classes>
+            <class name="com.parag.ecom.tests.OrderTest"/>
+        </classes>
+    </test>
+
+    <test name="End-to-End Tests">
+        <classes>
+            <class name="com.parag.ecom.tests.EndToEndTest"/>
+        </classes>
+    </test>
+
+    <test name="Contract Tests">
+        <classes>
+            <class name="com.parag.ecom.tests.ContractTest"/>
+        </classes>
+    </test>
+
 </suite>
