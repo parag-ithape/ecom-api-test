@@ -1,5 +1,7 @@
 # E-commerce API Test Automation (REST Assured + Java)
 
+[![API Tests](https://github.com/parag-ithape/ecom-api-test/actions/workflows/api-tests.yml/badge.svg)](https://github.com/parag-ithape/ecom-api-test/actions/workflows/api-tests.yml) · **[Latest report](https://parag-ithape.github.io/ecom-api-test/)**
+
 API test automation framework for an e-commerce backend: authentication, product management and (in progress) orders. It runs against the public practice app at [rahulshettyacademy.com/client](https://rahulshettyacademy.com/client).
 
 Built to show how I approach API testing on a real project: a layered framework, negative and security cases (not just happy paths), self-cleaning test data, and reports a non-technical stakeholder can read.

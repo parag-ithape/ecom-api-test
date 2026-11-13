@@ -1,0 +1,72 @@
+name: API Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "30 20 * * *"   # nightly, 20:30 UTC (02:00 IST)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      BASE_URI: https://rahulshettyacademy.com
+      RSA_EMAIL: ${{ secrets.RSA_EMAIL }}
+      RSA_PASSWORD: ${{ secrets.RSA_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+
+      # Fails the job when any test fails
+      - name: Run tests
+        run: mvn -B clean test
+
+      # The steps below run even when tests fail, so the report shows the failure
+      - name: Generate Allure report
+        if: always()
+        run: mvn -B allure:report
+
+      - name: Upload Allure report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: target/site/allure-maven-plugin
+          if-no-files-found: warn
+
+      - name: Upload report for GitHub Pages
+        if: always() && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: target/site/allure-maven-plugin
+
+  deploy-report:
+    needs: test
+    # Main only; still publishes when tests fail, so the latest report is always the latest run
+    if: always() && needs.test.result != 'cancelled' && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
