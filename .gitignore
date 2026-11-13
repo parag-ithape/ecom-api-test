@@ -5,3 +5,4 @@ target/
 *.log
 .env
 allure-results/
+.allure/
