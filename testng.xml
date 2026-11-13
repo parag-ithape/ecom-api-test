@@ -1,0 +1,17 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<!-- Suite and test names shown in the console and in the Allure "Suites" tab -->
+<suite name="E-commerce API Suite" verbose="1">
+
+    <test name="Auth Tests">
+        <classes>
+            <class name="com.parag.ecom.tests.LoginTest"/>
+        </classes>
+    </test>
+
+    <test name="Product Tests">
+        <classes>
+            <class name="com.parag.ecom.tests.ProductTest"/>
+        </classes>
+    </test>
+
+</suite>
