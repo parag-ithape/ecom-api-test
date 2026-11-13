@@ -17,17 +17,18 @@ public final class ProductApi {
     private ProductApi() {
     }
 
-    // Pass null as token to send no Authorization header
+    // Pass null as token to send no Authorization header.
+    // Null fields are left out of the form, so negative tests can drop a field.
     public static Response addProduct(String token, Product product) {
         RequestSpecification req = given()
-                .spec(token == null ? Specs.base() : Specs.auth(token))
-                .multiPart("productName", product.getProductName())
-                .multiPart("productAddedBy", product.getProductAddedBy())
-                .multiPart("productCategory", product.getProductCategory())
-                .multiPart("productSubCategory", product.getProductSubCategory())
-                .multiPart("productPrice", product.getProductPrice())
-                .multiPart("productDescription", product.getProductDescription())
-                .multiPart("productFor", product.getProductFor());
+                .spec(token == null ? Specs.base() : Specs.auth(token));
+        addField(req, "productName", product.getProductName());
+        addField(req, "productAddedBy", product.getProductAddedBy());
+        addField(req, "productCategory", product.getProductCategory());
+        addField(req, "productSubCategory", product.getProductSubCategory());
+        addField(req, "productPrice", product.getProductPrice());
+        addField(req, "productDescription", product.getProductDescription());
+        addField(req, "productFor", product.getProductFor());
         if (product.getProductImage() != null) {
             req.multiPart("productImage", product.getProductImage());
         }
@@ -50,5 +51,11 @@ public final class ProductApi {
                 .pathParam("productId", productId)
             .when()
                 .delete(DELETE);
+    }
+
+    private static void addField(RequestSpecification req, String name, String value) {
+        if (value != null) {
+            req.multiPart(name, value);
+        }
     }
 }

@@ -21,8 +21,8 @@ Java 17 · REST Assured 5 · TestNG 7 · Jackson · Allure · Maven · dotenv-ja
 | TC07 | Product | Add product (multipart form + image) | Smoke | ✅ |
 | TC08 | Product | Add product with no token | Security | ✅ |
 | TC09 | Product | Add product with tampered token | Security | ✅ |
-| TC10 | Product | Add product without name | Negative | 🔜 |
-| TC11 | Product | Add product with non-numeric price | Negative | 🔜 |
+| TC10 | Product | Add product without name | Negative | ⚠️ known defect: API returns 500 instead of 4xx |
+| TC11 | Product | Add product with non-numeric price | Negative | ⚠️ known defect: API returns 500 instead of 4xx |
 | TC12 | Product | New product appears in product list | Functional | ✅ |
 | TC13 | Product | Delete own product | Functional | ✅ |
 | TC14 | Product | Delete a product that no longer exists | Negative | ✅ |
@@ -44,7 +44,7 @@ src/main/java/com/parag/ecom
 src/test/java/com/parag/ecom/tests
 ├── BaseTest.java         – logs in once per suite and shares the token
 ├── LoginTest.java        – TC01–TC06
-├── ProductTest.java      – TC07–TC14
+├── ProductTest.java      – TC07–TC14 (TC10–TC11 disabled: known defect)
 ├── NetworkRetry.java     – retries only on network errors, never on failed assertions
 └── TestLogListener.java  – readable start/pass/fail lines and a summary in the console
 ```

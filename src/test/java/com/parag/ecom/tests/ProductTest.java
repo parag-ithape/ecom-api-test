@@ -64,6 +64,40 @@ public class ProductTest extends BaseTest {
         assertEquals(res.jsonPath().getString("message"), "Session Timeout");
     }
 
+    @Test(enabled = false)
+    @Description("Known defect: API returns 500 instead of 4xx for a product without productName")
+    @Severity(SeverityLevel.NORMAL)
+    public void addProductWithoutName() {       // TC10
+        Product product = Product.valid(userId, PRODUCT_IMAGE);
+        product.setProductName(null);
+
+        Response res = ProductApi.addProduct(token, product);
+        trackIfCreated(res);
+
+        // Live API (Nov 2026): HTTP 500, message.message =
+        // "Product validation failed: productName: Product Name is required"
+        int status = res.statusCode();
+        assertTrue(status >= 400 && status < 500, "Expected 4xx, got " + status);
+        assertTrue(res.asString().contains("Product Name is required"), "Validation message missing: " + res.asString());
+    }
+
+    @Test(enabled = false)
+    @Description("Known defect: API returns 500 instead of 4xx for a non-numeric price (\"abc\")")
+    @Severity(SeverityLevel.NORMAL)
+    public void addProductWithNonNumericPrice() {   // TC11
+        Product product = Product.valid(userId, PRODUCT_IMAGE);
+        product.setProductPrice("abc");
+
+        Response res = ProductApi.addProduct(token, product);
+        trackIfCreated(res);
+
+        // Live API (Nov 2026): HTTP 500, message.message =
+        // "Product validation failed: productPrice: Cast to Number failed for value \"abc\" (type string) at path \"productPrice\""
+        int status = res.statusCode();
+        assertTrue(status >= 400 && status < 500, "Expected 4xx, got " + status);
+        assertTrue(res.asString().contains("productPrice"), "Validation message missing: " + res.asString());
+    }
+
     @Test
     @Description("TC12: get all products after adding one contains the new productId")
     @Severity(SeverityLevel.NORMAL)
@@ -116,6 +150,14 @@ public class ProductTest extends BaseTest {
             ProductApi.deleteProduct(token, productId);
         }
         createdProductIds.clear();
+    }
+
+    // If the API wrongly accepts bad input, the product still gets cleaned up
+    private void trackIfCreated(Response res) {
+        String productId = res.jsonPath().getString("productId");
+        if (productId != null) {
+            createdProductIds.add(productId);
+        }
     }
 
     private String addProduct() {
